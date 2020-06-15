@@ -15,10 +15,14 @@ const RESULT_PROP = 'user';
 router.get('/', TokenAuthentication, async(req, res, next) => {
 
     try {
-        const usersDB = await User.find();
-        success(res, 200, usersDB, RESULT_PROP);
+        const from = Number(req.query.from) || 0;
+
+        const uCount = await User.count();
+        let usersDB = await User.find().skip(from).limit(5);
+
+        success(res, 200, [usersDB, uCount], [RESULT_PROP, 'total']);
     } catch (err) {
-        errors(res, 400, 'Cannot get the users.', err);
+        errors(res, 400, `Cannot get the ${RESULT_PROP}s.`, err);
     }
 });
 
@@ -38,7 +42,7 @@ router.post('/', [TokenAuthentication, ManageRoles], async(req, res, next) => {
 
         errors(res, 400, 'User cannot be created.', { message: 'User cannot be created.' });
     } catch (err) {
-        errors(res, 400, 'Error creating user.', err);
+        errors(res, 400, `Error creating ${RESULT_PROP}.`, err);
     }
 });
 
@@ -61,7 +65,7 @@ router.put('/:id', TokenAuthentication, async(req, res, next) => {
         success(res, 200, userUpdated, RESULT_PROP);
 
     } catch (err) {
-        errors(res, 400, 'Error updating user.', err);
+        errors(res, 400, `Error creating ${RESULT_PROP}.`, err);
     }
 });
 
@@ -79,7 +83,7 @@ router.delete('/:id', TokenAuthentication, async(req, res, next) => {
         success(res, 200, userDeleted, RESULT_PROP);
 
     } catch (err) {
-        errors(res, 400, 'Error deleting user.', err);
+        errors(res, 400, `Error deleting ${RESULT_PROP}.`, err);
     }
 });
 

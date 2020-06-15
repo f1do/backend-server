@@ -8,7 +8,7 @@ const TokenAuthentication = async(req, res, next) => {
 
     try {
         const tokenDecoded = await jwt.verify(token || '', process.env.JWT_SEED);
-        req.user = tokenDecoded;
+        req.user = tokenDecoded.user;
         next();
     } catch (err) {
         errors(res, 401, 'Invalid token', err);
@@ -16,15 +16,16 @@ const TokenAuthentication = async(req, res, next) => {
 };
 
 const ManageRoles = async(req, res, next) => {
-    var email = req.user.email;
+    const email = req.user.email;
 
     try {
         const userDB = await User.findOne({ email });
 
         if (userDB && userDB.role === 'ADMIN_ROLE') {
             next();
+        } else {
+            errors(res, 401, 'Invalid user', err);
         }
-        errors(res, 401, 'Invalid user', err);
     } catch (err) {
         errors(res, 401, 'Invalid user', err);
     }

@@ -21,7 +21,6 @@ let userSchema = new Schema({
 userSchema.plugin(uniqueValidator, { message: 'The {PATH} must be unique' });
 
 userSchema.methods.toJSON = function() {
-    //console.log('asking for deleting fields');
     let usrObj = this.toObject();
     delete usrObj.password;
     delete usrObj.created;
