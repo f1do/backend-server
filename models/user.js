@@ -15,7 +15,8 @@ let userSchema = new Schema({
     created: { type: Date, default: Date.now },
     img: { type: String, required: false },
     role: { type: String, required: true, default: 'USER_ROLE', enum: VALID_ROLES },
-    active: { type: Boolean, default: true }
+    active: { type: Boolean, default: true },
+    google: { type: Boolean, default: false }
 });
 
 userSchema.plugin(uniqueValidator, { message: 'The {PATH} must be unique' });
@@ -24,6 +25,7 @@ userSchema.methods.toJSON = function() {
     let usrObj = this.toObject();
     delete usrObj.password;
     delete usrObj.created;
+    delete usrObj.active;
     return usrObj;
 };
 
