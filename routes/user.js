@@ -29,7 +29,7 @@ router.get('/', TokenAuthentication, async(req, res, next) => {
 /****************************************
     Create new user
  ****************************************/
-router.post('/', [TokenAuthentication, ManageRoles], async(req, res, next) => {
+router.post('/', async(req, res, next) => {
 
     const body = req.body;
     body.password = bcrypt.hashSync(body.password, 10);

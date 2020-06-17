@@ -18,9 +18,21 @@ mongoose.connect('mongodb://localhost:27017/hospital-db', { useNewUrlParser: tru
 );
 mongoose.set('useCreateIndex', true);
 
+// CORS Options
+const whitelist = ['http://localhost:3000', 'http://localhost:4200']
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (whitelist.indexOf(origin) !== -1 || origin === undefined /*OR operator is for postman calls*/ ) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
+
 // Middlewares
-app.use(morgan('tiny'));
-app.use(cors());
+app.use(morgan('combined'));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
