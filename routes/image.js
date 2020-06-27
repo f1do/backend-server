@@ -11,7 +11,7 @@ const RESULT_PROP = 'file';
 /**********************************************************
     Get an image related to a user, doctor or hospital
  **********************************************************/
-router.post('/', TokenAuthentication, async(req, res, next) => {
+router.post('/', async(req, res, next) => {
 
     try {
         let { type, img, id } = req.body;
@@ -32,7 +32,7 @@ const GetAnImage = async(type, img, id, res) => {
     }
 };
 
-router.get('/:type/:id/:img', TokenAuthentication, async(req, res, next) => {
+router.get('/:type/:id/:img', async(req, res, next) => {
 
     try {
         const type = req.params.type;

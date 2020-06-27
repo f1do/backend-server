@@ -61,11 +61,11 @@ router.put('/:id', TokenAuthentication, async(req, res, next) => {
             return errors(res, 400, `User ${id} does not exists.`, { message: 'That Id does not exists in the database.' });
         }
 
-        const userUpdated = await User.findByIdAndUpdate(id, body, { new: true, runValidators: true });
+        const userUpdated = await User.findByIdAndUpdate(id, body, { new: true });
         success(res, 200, userUpdated, RESULT_PROP);
 
     } catch (err) {
-        errors(res, 400, `Error creating ${RESULT_PROP}.`, err);
+        errors(res, 400, `Error updating ${RESULT_PROP}.`, err);
     }
 });
 
