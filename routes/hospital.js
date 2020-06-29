@@ -17,7 +17,9 @@ router.get('/', TokenAuthentication, async(req, res, next) => {
         const from = Number(req.query.from) || 0;
 
         const hCount = await Hospital.count();
-        const hospitalDB = await Hospital.find().skip(from).limit(5).populate('user');
+        const hospitalDB = from === -1 ?
+            await Hospital.find().populate('user') :
+            await Hospital.find().skip(from).limit(5).populate('user');
         success(res, 200, [hospitalDB, hCount], [RESULT_PROP, 'total']);
     } catch (err) {
         errors(res, 400, `Cannot get the ${RESULT_PROP}s.`, err);

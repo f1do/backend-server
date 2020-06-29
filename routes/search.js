@@ -49,7 +49,7 @@ router.get('/collection/:table/:find', TokenAuthentication, async(req, res, next
                 result = await User.find().or([{ 'name': regex }, { 'email': regex }]);
                 break;
             case 'hospital':
-                result = await Doctor.find({ name: regex }).populate('user');
+                result = await Hospital.find({ name: regex }).populate('user');
                 break;
             default:
                 result = { message: `The collection \'${_collection}\' does not exists.` };

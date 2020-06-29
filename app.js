@@ -31,7 +31,7 @@ const corsOptions = {
 }
 
 // Middlewares
-app.use(morgan('combined'));
+app.use(morgan('tiny'));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
