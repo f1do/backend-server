@@ -32,4 +32,21 @@ const ManageRoles = async(req, res, next) => {
 
 };
 
-module.exports = { TokenAuthentication, ManageRoles };
+const VerifySameUser = async(req, res, next) => {
+    const email = req.user.email;
+    const id = req.params.id;
+
+    try {
+        const userDB = await User.findOne({ email });
+        if ((userDB && userDB.role === 'ADMIN_ROLE') || userDB._id == id) {
+            next();
+        } else {
+            errors(res, 401, 'Invalid user', err);
+        }
+    } catch (err) {
+        errors(res, 401, 'Invalid user', err);
+    }
+
+};
+
+module.exports = { TokenAuthentication, ManageRoles, VerifySameUser };

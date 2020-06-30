@@ -5,7 +5,7 @@ import { errors, success } from './responses';
 import User from '../models/user';
 import bcrypt from 'bcryptjs';
 import _ from 'underscore';
-import { TokenAuthentication, ManageRoles } from '../middlewares';
+import { TokenAuthentication, ManageRoles, VerifySameUser } from '../middlewares';
 
 const RESULT_PROP = 'user';
 
@@ -49,7 +49,7 @@ router.post('/', async(req, res, next) => {
 /****************************************
     Update an existing user
  ****************************************/
-router.put('/:id', TokenAuthentication, async(req, res, next) => {
+router.put('/:id', [TokenAuthentication, VerifySameUser], async(req, res, next) => {
 
     const id = req.params.id;
     const body = _.pick(req.body, ['name', 'email', 'role', 'active']);
@@ -72,7 +72,7 @@ router.put('/:id', TokenAuthentication, async(req, res, next) => {
 /****************************************
     Delete an existing user
  ****************************************/
-router.delete('/:id', TokenAuthentication, async(req, res, next) => {
+router.delete('/:id', [TokenAuthentication, ManageRoles], async(req, res, next) => {
     const id = req.params.id;
     try {
         const userDeleted = await User.findByIdAndDelete(id);

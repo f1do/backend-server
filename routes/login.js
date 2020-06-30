@@ -13,7 +13,7 @@ const RESULT_PROP = 'user';
 
 const createToken = (obj, res) => {
     let _token = jwt.sign({ user: obj }, process.env.JWT_SEED, { expiresIn: process.env.JWT_TIME });
-    return success(res, 200, [obj, _token], [RESULT_PROP, 'token']);
+    return success(res, 200, [obj, _token, getMenu(obj.role)], [RESULT_PROP, 'token', 'menu']);
 };
 
 /****************************************
@@ -77,6 +77,36 @@ const verify = async(token) => {
         google: true
     }
 }
+
+const getMenu = (role) => {
+    let menu = [{
+            title: 'Main',
+            icon: 'mdi mdi-gauge',
+            submenu: [
+                { title: 'Dashboard', url: '/dashboard' },
+                { title: 'ProgressBar', url: '/progress' },
+                { title: 'Graphics', url: '/graphics' },
+                { title: 'Promises', url: '/promises' },
+                { title: 'RXJS', url: '/rxjs' }
+            ]
+        },
+        {
+            title: 'Maintenance',
+            icon: 'mdi mdi-folder-lock-open',
+            submenu: [
+                // { title: 'Users', url: '/user' },
+                { title: 'Hospitals', url: '/hospital' },
+                { title: 'Doctors', url: '/doctor' }
+            ]
+        }
+    ];
+
+    if (role === 'ADMIN_ROLE') {
+        menu[1].submenu.unshift({ title: 'Users', url: '/user' });
+    }
+
+    return menu;
+};
 
 
 module.exports = router;
