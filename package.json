@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "devbabel": "nodemon app --exec babel-node",
-        "start": "nodemon app"
+        "start": "babel-node app.js --exec"
     },
     "author": "PAragon",
     "license": "ISC",

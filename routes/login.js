@@ -8,6 +8,7 @@ import { errors, success } from './responses';
 import User from '../models/user';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { TokenAuthentication } from '../middlewares/index'
 
 const RESULT_PROP = 'user';
 
@@ -34,6 +35,15 @@ router.post('/', async(req, res, next) => {
     } catch (err) {
         errors(res, 400, 'Error trying to authenticate the user.', err);
     }
+});
+
+/****************************************
+    Token Renewal
+ ****************************************/
+router.get('/renewedtoken', TokenAuthentication, (req, res, next) => {
+
+    return createToken(req.user, res);
+
 });
 
 /****************************************
